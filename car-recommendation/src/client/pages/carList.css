@@ -1,0 +1,11 @@
+.parallax-effect-img {
+      transform-style: preserve-3d;
+      transform: perspective(1000px);
+      background-size: contain;
+      background-repeat: no-repeat;
+    
+      .inner-element{
+        scale: 0.95;
+        border-radius: 1rem;
+      }
+    }

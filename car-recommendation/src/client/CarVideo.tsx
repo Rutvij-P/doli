@@ -6,7 +6,7 @@ function CarVideo() {
           muted
           loop
         >
-          <source src="src/client/assets/carvideo.mp4" type="video/mp4" />
+          <source src="../src/client/assets/carvideo.mp4" type="video/mp4" />
         </video>
     );
 }
