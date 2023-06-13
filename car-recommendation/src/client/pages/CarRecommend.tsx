@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
+import Tilt from 'react-parallax-tilt';
+import '../pages/carList.css';
 
 const CarRecommend = () => {
     const [companies, setCompanies] = useState<string[]>([]);
@@ -11,6 +13,7 @@ const CarRecommend = () => {
     const [selectedDriveTypes, setSelectedDriveTypes] = useState<string[]>([]);
     const [selectedVehicleTypes, setSelectedVehicleTypes] = useState<string[]>([]);
     const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+    const [recommendedCars, setRecommendedCars] = useState<any[]>([]);
   
     const fetchFilters = async () => {
       try {
@@ -67,7 +70,7 @@ const CarRecommend = () => {
       try {
         const response = await axios.get(url);
         // Handle the recommended car data
-        console.log(response.data);
+        setRecommendedCars(response.data);
       } catch (error) {
         console.error('Failed to fetch recommended cars', error);
       }
@@ -77,54 +80,94 @@ const CarRecommend = () => {
     useEffect(() => {
       fetchFilters();
     }, []);
+
+    const renderRecommendedCars = () => {
+        if (recommendedCars.length === 0) {
+          return <p>No cars found.</p>;
+        }
+
+        return (
+            <ul className='flex flex-wrap items-stretch py-4 justify-evenly'>
+              {recommendedCars.map((car) => (
+                <Tilt
+                className="parallax-effect-img"
+                tiltMaxAngleX={10}
+                tiltMaxAngleY={10}
+                perspective={800}
+                transitionSpeed={1500}
+                scale={1.05}
+                gyroscope={true}>
+                  <div className='flex-0 m-2.5 rounded-2xl border-gray-300 shadow-md h-108 w-96 object-fit' key={car.name}>
+                    <li key={car.name}>
+                      <img className='inner-element' src={car.picture} alt={car.name} />
+                      <h2 className='flex justify-evenly text-2vw'>{car.name}</h2>
+                      <p>Company: {car.company}</p>
+                      <p>Drive Type: {car.driveType}</p>
+                      <p>Vehicle Type: {car.vehicleType}</p>
+                      <p>Seats: {car.seats}</p>
+                    </li>
+                  </div>
+                </Tilt>
+              ))}
+            </ul>
+          );
+    };
   
     return (
-      <div className='flex-col pt-100px'>
+        <div className='flex-col pt-100px'>
         <h1 className='text-3vw flex justify-evenly'>Car Recommendation</h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <h2>Company</h2>
-            {companies.map((company) => (
-              <label key={company}>
-                <input type="checkbox" value={company} onChange={handleCompanyChange} />
-                {company}
-              </label>
-            ))}
-          </div>
-  
-          <div>
-            <h2>Drive Type</h2>
-            {driveTypes.map((driveType) => (
-              <label key={driveType}>
-                <input type="checkbox" value={driveType} onChange={handleDriveTypeChange} />
-                {driveType}
-              </label>
-            ))}
-          </div>
-  
-          <div>
-            <h2>Vehicle Type</h2>
-            {vehicleTypes.map((vehicleType) => (
-              <label key={vehicleType}>
-                <input type="checkbox" value={vehicleType} onChange={handleVehicleTypeChange} />
-                {vehicleType}
-              </label>
-            ))}
-          </div>
-  
-          <div>
-            <h2>Seats</h2>
-            {seats.map((seat) => (
-              <label key={seat}>
-                <input type="checkbox" value={seat} onChange={handleSeatsChange} />
-                {seat}
-              </label>
-            ))}
-          </div>
-  
-          <button type="submit">Submit</button>
-        </form>
-      </div>
+            <form onSubmit={handleSubmit}>
+                <div className='flex-col py-4 justify-evenly'>
+                    <h2 className='text-1.5vw py-2'>Company</h2>
+                    {companies.map((company) => (
+                        <label className='px-2 justify-evenly' key={company}>
+                            <input type="checkbox" value={company} onChange={handleCompanyChange} />
+                            {company}
+                        </label>
+                    ))}
+                </div>
+        
+                <div className='flex-col py-4 justify-evenly'>
+                    <h2 className='text-1.5vw py-2'>Drive Type</h2>
+                    {driveTypes.map((driveType) => (
+                        <label className='px-2 justify-evenly' key={driveType}>
+                            <input type="checkbox" value={driveType} onChange={handleDriveTypeChange} />
+                            {driveType}
+                        </label>
+                    ))}
+                </div>
+        
+                <div className='flex-col py-4 justify-evenly'>
+                    <h2 className='text-1.5vw py-2'>Vehicle Type</h2>
+                    {vehicleTypes.map((vehicleType) => (
+                        <label className='px-2 justify-evenly' key={vehicleType}>
+                            <input type="checkbox" value={vehicleType} onChange={handleVehicleTypeChange} />
+                            {vehicleType}
+                        </label>
+                    ))}
+                </div>
+        
+                <div className='flex-col py-4 justify-evenly'>
+                    <h2 className='text-1.5vw py-2'>Seats</h2>
+                    {seats.map((seat) => (
+                        <label className='px-2 justify-evenly' key={seat}>
+                            <input type="checkbox" value={seat} onChange={handleSeatsChange} />
+                            {seat}
+                        </label>
+                    ))}
+                </div>
+        
+                <button className='text-2vw' type="submit">Submit</button>
+            </form>
+
+            <div>
+                <h2>Recommended Cars:</h2>
+                {renderRecommendedCars()}
+            </div>
+
+            <button className='text-2vw' onClick={() => setRecommendedCars([])}>Back</button>
+            
+        </div>
     );
   };
   
