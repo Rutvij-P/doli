@@ -23,6 +23,23 @@ app.get('/api/cars', async (req, res) => {
   }
 });
 
+app.get('/api/filters', async (req, res) => {
+  const db = await connectToDatabase();
+  const carsCollection = db.collection('cars');
+
+  try {
+    const companies = await carsCollection.distinct('company');
+    const driveTypes = await carsCollection.distinct('driveType');
+    const vehicleTypes = await carsCollection.distinct('vehicleType');
+    const seats = await carsCollection.distinct('seats');
+
+    res.json({ companies, driveTypes, vehicleTypes, seats });
+  } catch (error) {
+    console.error('Failed to fetch filters', error);
+    res.status(500).json({ error: 'Failed to fetch filters' });
+  }
+});
+
 // Add more API endpoints as needed
 
 app.listen(port, () => {

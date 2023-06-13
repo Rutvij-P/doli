@@ -34,7 +34,9 @@ function Navbar() {
                     <Link to="/" style={{ textDecoration: 'none', color: "inherit" }}>home.</Link>
                 </motion.span>
                 <motion.span variants={reveal} className="text-18px text-gray-500 cursor-pointer">about.</motion.span>
-                <motion.span variants={reveal} className="text-18px text-gray-500 cursor-pointer">services.</motion.span>
+                <motion.span variants={reveal} className="text-18px text-gray-500 cursor-pointer">
+                    <Link to="/carrecommend" style={{ textDecoration: 'none', color: "inherit" }}>services.</Link>
+                </motion.span>
                 <motion.span variants={reveal} className="text-18px text-gray-500 cursor-pointer">
                     <Link to="/carlist" style={{ textDecoration: 'none', color: "inherit" }}>cars.</Link>
                 </motion.span>

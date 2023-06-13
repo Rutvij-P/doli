@@ -43,7 +43,7 @@ const CarList = () => {
                 <div className='flex-0 m-2.5 rounded-2xl border-gray-300 shadow-md h-108 w-96 object-fit' key={car.name}>
                   <li key={car.name}>
                     <img className='inner-element' src={car.picture} alt={car.name} />
-                    <h2>{car.name}</h2>
+                    <h2 className='flex justify-evenly text-2vw'>{car.name}</h2>
                     <p>Company: {car.company}</p>
                     <p>Drive Type: {car.driveType}</p>
                     <p>Vehicle Type: {car.vehicleType}</p>
